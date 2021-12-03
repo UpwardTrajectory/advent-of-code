@@ -37,6 +37,6 @@ print("All tests passed.")
 
 if __name__ == "__main__":
     p1 = calc_final_position("inputs.txt")
-    print(p1)
+    print("Part 1:", p1)
     p2 = calc_aim("inputs.txt")
-    print(p2)
+    print("Part 2:", p2)
