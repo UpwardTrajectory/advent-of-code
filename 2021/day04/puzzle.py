@@ -5,11 +5,12 @@ from dataclasses import dataclass, field
 @dataclass
 class Board:
     raw: str
-    state: np.array = None
+    marked_grid: np.array(bool) = None # default to all False in post_init()
+    winning_score: int = None
 
     def __post_init__(self) -> None:
-        if self.state is None:
-            self.state = np.zeros((5, 5), dtype=bool)
+        if self.marked_grid is None:
+            self.marked_grid = np.zeros((5, 5), dtype=bool)
 
     def __repr__(self) -> str:
         return f"Board({self.number_grid[0]}...)"
@@ -23,16 +24,19 @@ class Board:
 
     @property
     def winner(self) -> bool:
-        horiz = self.state.all(axis=1).any()
-        vert = self.state.all(axis=0).any()
+        horiz = self.marked_grid.all(axis=1).any()
+        vert = self.marked_grid.all(axis=0).any()
         return horiz | vert
 
     def mark_num(self, num: int):
-        self.state[np.where(self.number_grid == num)] = True
+        self.marked_grid[np.where(self.number_grid == num)] = True
 
     def final_score(self, winning_draw: int) -> int:
-        unmarked_sum = (self.number_grid * (1 - self.state)).sum()
-        return winning_draw * unmarked_sum
+        if self.winning_score is not None:
+            return self.winning_score
+        unmarked_sum = (self.number_grid * (1 - self.marked_grid)).sum()
+        self.winning_score = winning_draw * unmarked_sum
+        return self.winning_score        
 
 
 @dataclass
