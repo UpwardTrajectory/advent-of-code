@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from collections import Counter
-import pandas as pd
 import numpy as np
 
 
@@ -16,10 +15,10 @@ class Line:
     y2: int
     points_touched: set(tuple((int, int))) = field(default_factory=set, repr=False)
 
-    def __hash__(self):
+    def __hash__(self) -> hash:
         return hash(repr(self))
 
-    def fill(self, enable_diag):
+    def fill(self, enable_diag: bool) -> None:
         x1, y1, x2, y2 = self.x1, self.y1, self.x2, self.y2
         if x1 == x2:
             y_start = min(y1, y2)
@@ -55,7 +54,7 @@ class VentFinder:
     lines: set([Line]) = None
     danger_map: "Counter[(x, y): num_vents]" = field(default=None, repr=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.danger_map = Counter()
 
         all_lines = set()
@@ -74,22 +73,22 @@ class VentFinder:
         self.lines = all_lines
         return
 
-    def mark(self, line, enable_diag):
+    def mark(self, line: Line, enable_diag: bool) -> None:
         line.fill(enable_diag)
         for pt in line.points_touched:
             self.danger_map[pt] += 1
         return
 
-    def map_floor(self, enable_diag):
+    def map_floor(self, enable_diag: bool) -> None:
         for line in self.lines:
             self.mark(line, enable_diag)
         return
 
-    def count_dangerous(self, thresh=2, enable_diag=False):
+    def count_dangerous(self, thresh: int = 2, enable_diag: bool = False) -> int:
         self.map_floor(enable_diag)
         return len([pt for pt in self.danger_map if self.danger_map[pt] >= thresh])
 
-    def show_vents(self):
+    def show_vents(self) -> None:
         xmax = max(l.x2 for l in self.lines)
         ymax = max(max(l.y1, l.y2) for l in self.lines)
         grid = np.zeros((xmax + 1, ymax + 1))
