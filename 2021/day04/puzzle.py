@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 @dataclass
 class Board:
     raw: str
-    marked_grid: np.array(bool) = None # default to all False in post_init()
+    marked_grid: np.array(bool) = None  # default to all False in post_init()
     winning_score: int = None
 
     def __post_init__(self) -> None:
@@ -36,18 +36,19 @@ class Board:
             return self.winning_score
         unmarked_sum = (self.number_grid * (1 - self.marked_grid)).sum()
         self.winning_score = winning_draw * unmarked_sum
-        return self.winning_score        
+        return self.winning_score
 
 
 @dataclass
 class Bingo:
     """refactored after knowing part 2 needed all games to eventually win"""
+
     draws: np.array
     boards: list[Board]
     winning_score: int = None
     last_loser_score: int = None
     win_order: list[Board] = field(default_factory=list)
-        
+
     def play_all(self) -> None:
         for draw in self.draws:
             for board in self.boards:
@@ -88,7 +89,7 @@ print("All tests passed.")
 if __name__ == "__main__":
     game = Bingo(*parse_raw("inputs.txt"))
     game.play_all()
-    
+
     p1 = game.winning_score
     print("Part 1:", p1)
 

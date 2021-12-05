@@ -21,9 +21,9 @@ def epsilon(gamma: str) -> str:
     
     NOTE: replace is faster than "".join():  https://stackoverflow.com/a/23303239/14083170
     """
-#     return "".join("1" if b == "0" else "0" for b in gamma)
-    return gamma.replace('1', '2').replace('0', '1').replace('2', '0')
-    
+    #     return "".join("1" if b == "0" else "0" for b in gamma)
+    return gamma.replace("1", "2").replace("0", "1").replace("2", "0")
+
 
 def power_consumption(bits: np.array) -> int:
     gam = gamma(bits)
