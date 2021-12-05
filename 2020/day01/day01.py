@@ -2,14 +2,15 @@ import numpy as np
 import itertools
 
 
-with open('inputs.txt', 'r') as f:
+with open("inputs.txt", "r") as f:
     expense_report = f.read()
-    
-expense_report = [float(x) for x in expense_report.split('\n')]
+
+expense_report = [float(x) for x in expense_report.split("\n")]
 
 
-def get_result(expense_report, tally=2020, in_operation=np.sum
-               , out_operation=np.prod, n=2):
+def get_result(
+    expense_report, tally=2020, in_operation=np.sum, out_operation=np.prod, n=2
+):
     """Given an expense_report : list
     get all combinations of expense_report repeated n times
     use in_operation() : must operate on an array
@@ -25,9 +26,6 @@ def get_result(expense_report, tally=2020, in_operation=np.sum
 
 
 if __name__ == "__main__":
-    
+
     for n in [2, 3]:
         print(get_result(expense_report, n=n))
-    
-        
-    

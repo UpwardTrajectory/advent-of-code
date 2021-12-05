@@ -14,7 +14,7 @@ L.LLLLL.LL"""
 sample2 = "\n".join(["".join(choices("L.", k=20)) for _ in range(30)])
 
 test_strings = [
-    sample, 
+    sample,
     """#.##.##.##
 #######.##
 #.#.#..#..
@@ -64,7 +64,7 @@ L.#.L..#..
 ..L.L.....
 #L#L##L#L#
 #.LLLLLL.L
-#.#L#L#.##"""
+#.#L#L#.##""",
 ]
 
 

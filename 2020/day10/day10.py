@@ -7,14 +7,14 @@ def count_gaps(data):
     jolts = 0
     # The final jump to our device is always 3
     jolt_jump_counter = {0: 0, 1: 0, 2: 0, 3: 1}
-    
+
     for ada in ada_options:
         jump = ada - jolts
         jolts += jump
         if jump not in jolt_jump_counter:
             raise ValueError(f"There's a problem getting to the {ada} jolt adapter.")
         jolt_jump_counter[jump] += 1
-    
+
     return jolt_jump_counter[3] * jolt_jump_counter[1]
 
 
@@ -22,17 +22,17 @@ def build_graph(data):
     """Create a graph with a single point of entry, and a single point of exit"""
     ada_options = [-3, 0] + sorted([int(x) for x in data.split("\n")])
     ada_options.append(ada_options[-1] + 3)
-    
-    edges = set()    
+
+    edges = set()
     for i, ada in enumerate(ada_options):
-        next_3 = ada_options[i+1: i+4]
+        next_3 = ada_options[i + 1 : i + 4]
         next_3_filtered = [x for x in next_3 if (x - ada) <= 3]
         next_3_filtered = [(ada, node) for node in next_3_filtered]
         edges.update(next_3_filtered)
     G = nx.DiGraph()
     G.add_edges_from(edges)
     return G
-   
+
 
 def find_entropy_zones(G):
     """Isolate the (start, stop) zones for any part of the graph containing 
@@ -46,10 +46,10 @@ def find_entropy_zones(G):
     zones_of_chaos = []
 
     for node in nodes:
-        
+
         able_to_leave_chaos = (
             prev_n_out == 1
-            and G.in_degree(node) == 1 
+            and G.in_degree(node) == 1
             and open_gate_to_chaos != prev_node  # Skip single-paths
         )
 
@@ -61,7 +61,7 @@ def find_entropy_zones(G):
 
     return set(zones_of_chaos)
 
-    
+
 def count_paths(data):
     """Find zones of chaos within the list of adapters
     (any section with more than one possible option forward)
@@ -78,12 +78,14 @@ def count_paths(data):
     G = build_graph(data)
     zones_of_chaos = find_entropy_zones(G)
     total_paths = 1
-    
+
     for chaos_window in zones_of_chaos:
-        enter, depart = chaos_window        
-        ways_through = sum([1 for _ in nx.all_simple_paths(G, source=enter, target=depart)])
+        enter, depart = chaos_window
+        ways_through = sum(
+            [1 for _ in nx.all_simple_paths(G, source=enter, target=depart)]
+        )
         total_paths *= ways_through
-        
+
     return total_paths
 
 

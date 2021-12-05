@@ -4,7 +4,9 @@ from treemaps import sample, treemap
 
 def treemap_to_array(treemap):
     """Convert string_blob treemap into numpy boolean array"""
-    return np.array([[1 if c == "#" else 0 for c in row] for row in treemap.split("\n")])
+    return np.array(
+        [[1 if c == "#" else 0 for c in row] for row in treemap.split("\n")]
+    )
 
 
 def count_trees(treemap, delta_x, delta_y):
@@ -19,20 +21,20 @@ def count_trees(treemap, delta_x, delta_y):
     """
     cur_x, cur_y = 0, 0
     tally = 0
-    
+
     # Avoid infinite while loop
     if delta_y <= 0:
         raise ValueError("delta_y must be positive in order to move downhill.")
-            
+
     while cur_y < len(treemap):
         if treemap[cur_y, cur_x]:
             tally += 1
         cur_x = (cur_x + delta_x) % treemap.shape[1]
         cur_y += delta_y
-      
+
     return tally
-      
-    
+
+
 # Testing
 sample_arr = treemap_to_array(sample)
 sample_tree_count = count_trees(sample_arr, 3, 1)
@@ -40,20 +42,20 @@ assert sample_tree_count == 7, f"should be 7, we got {sample_tree_count}"
 
 
 if __name__ == "__main__":
-    
+
     treemap_arr = treemap_to_array(treemap)
     tree_counts = {
-        (1,1): None,
-        (3,1): None,
-        (5,1): None,
-        (7,1): None,
-        (1,2): None,
+        (1, 1): None,
+        (3, 1): None,
+        (5, 1): None,
+        (7, 1): None,
+        (1, 2): None,
     }
-    
+
     for slope in tree_counts:
         tree_counts[slope] = count_trees(treemap_arr, *slope)
-        
-    print(tree_counts[(3,1)])
+
+    print(tree_counts[(3, 1)])
     print(np.prod([float(x) for x in tree_counts.values()]))
     # Why float()?
     # https://numpy.org/doc/stable/reference/generated/numpy.prod.html

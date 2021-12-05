@@ -70,28 +70,29 @@ part_1 = is_invalid_preamble(XMAS, 25)[0]
 # part 2, find two numbers in contiguous set which equal the invalid preamble
 # return the sum of the min and max
 
+
 def sum_max_min(sequence: List[int], target: int) -> int:
     for i in range(len(sequence)):
         for j in range(2, len(sequence) + 1):
             if sum(sequence[i:j]) == target:
                 return sum([min(sequence[i:j]), max(sequence[i:j])])
-            
-            
+
+
 def sum_max_min(data, target):
-    
-    start = stop = 0 
+
+    start = stop = 0
     total = data[0]
-    
+
     while True:
-        while (total < target):
+        while total < target:
             stop += 1
             total += data[stop]
-        
-        while (total > target):
+
+        while total > target:
             # if we've overshot, remove entries from beginning of range
             total -= data[start]
             start += 1
-            
+
         if total == target:
             if start == stop:
                 # length of returned range must be > 1
@@ -101,13 +102,13 @@ def sum_max_min(data, target):
                 total = data[start]
             else:
                 break
-    window = data[start:stop+1]
-            
+    window = data[start : stop + 1]
+
     return min(window) + max(window)
 
 
 pred = sum_max_min(XMAS, part_1)
 
 print(time.time() - t)
-print(part_1) # 14144619
+print(part_1)  # 14144619
 print(pred)
