@@ -57,12 +57,17 @@ class School:
         return 
     
     def exist_n_days(self, n):
+        """TO-DO: 
+        Find a closed-form solution :)
+        -OR- 
+        Cache the values for each amount of days left, so we
+        don't keep recalculating the same math over & over
+        """
         todo = Counter(self.initial_state)
         
         for _ in range(n):
             self.exist_one_day()
         return len(self.school)
-    
     
     
 test_school = School('tests.txt') 
