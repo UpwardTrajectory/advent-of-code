@@ -13,7 +13,7 @@ class CrabFuelOptimizer:
         crabs = Path(self.fpath).read_text().split(",")
         self.crabs = np.array([int(x) for x in crabs])
         return
-    
+
     def part_1(self) -> int:
         distances = np.abs(self.crabs - np.median(self.crabs))
         return distances.sum().astype(int)
@@ -30,7 +30,7 @@ class CrabFuelOptimizer:
         )
         return self.increased_fuel_consumption(best_pos)
 
-    
+
 crabs = CrabFuelOptimizer("tests.txt")
 
 t1 = crabs.part_1()
