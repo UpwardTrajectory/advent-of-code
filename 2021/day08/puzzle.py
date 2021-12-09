@@ -101,9 +101,7 @@ class Observation:
 @dataclass
 class EasyDigits:
     fpath: str
-    # raw_inputs: list[str] = field(default_factory=list, repr=False)
     lines: list[Observation] = None
-    # raw_outputs: list[str] = field(default_factory=list, repr=False)
 
     def __post_init__(self) -> None:
         lines = Path(self.fpath).read_text().split("\n")
