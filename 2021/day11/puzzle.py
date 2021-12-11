@@ -16,10 +16,6 @@ class Octopus:
     neighbors: list = field(default_factory=list, repr=False)
     total_flashes: int = 0
 
-    def __post_init__(self):
-        neighbors = self.get_neighbor_coords()
-        return
-
     def get_neighbor_coords(self):
         row = self.row
         col = self.col
@@ -81,9 +77,10 @@ class Puzzle:
             for col_num, lvl in enumerate(row):
                 octopi.append(Octopus(row_num, col_num, lvl))
 
-        self.octopi = octopi
-        for octopus in self.octopi:
+        for octopus in octopi:
             octopus.set_neighbors(octopi)
+            
+        self.octopi = octopi
         return
 
     def single_round(self, part_2=False):
@@ -108,14 +105,19 @@ class Puzzle:
         return
 
     def part_1(self):
+        """Added part_2=True to make sure we check whether the first_sync
+        occurs inside the first 100 iterations (this is unlikely)
+        """
         for _ in range(100):
-            self.single_round()
+            self.single_round(part_2=True)
 
         return self.after_100
 
     def part_2(self):
         while self.first_sync is None:
             self.single_round(part_2=True)
+            
+            # paranoid safeguard to prevent infinite loop
             if self.n > 1000:
                 print("This is going too long.")
                 break
