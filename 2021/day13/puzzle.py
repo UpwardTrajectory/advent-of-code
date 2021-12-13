@@ -5,7 +5,7 @@ import numpy as np
 
 
 T1_ANS = 17
-T2_ANS = None
+T2_ANS = "\n\n#####\n#   #\n#   #\n#   #\n#####\n     \n     \n"
 
 
 @dataclass
@@ -40,22 +40,17 @@ class Puzzle:
         return grid
 
     def fold_vert(self, val) -> np.array:
-        """Offset is needed to deal w/ even vs odd number of rows"""
-        offset = int(self.grid.shape[0] % 2)
-
         top = self.grid[:val, :]
-        bot = np.flipud(self.grid[val + offset :, :])
-        top[-val - offset :, :] = top[-val - offset :, :] | bot
+        bot = np.flipud(self.grid[val + 1 :, :])
+        n_rows_affected = bot.shape[0]
+        top[-n_rows_affected:, :] = top[-n_rows_affected:, :] | bot
         return top
 
     def fold_horiz(self, val) -> np.array:
-        """Offset is needed to deal w/ even vs odd number of columns"""
-        offset = int(self.grid.shape[1] % 2)
-
         left = self.grid[:, :val]
-        right = self.grid[:, val + offset :]
-        right = np.fliplr(right)
-        left[:, -val - offset :] = left[:, -val - offset :] | right
+        right = np.fliplr(self.grid[:, val + 1 :])
+        n_cols_affected = right.shape[1]
+        left[:, -n_cols_affected:] = left[:, -n_cols_affected:] | right
         return left
 
     def fold(self) -> np.array:
@@ -78,18 +73,18 @@ class Puzzle:
             matrix = self.grid
         grid = np.where(matrix, "#", " ")
 
-        for row in grid:
-            print("".join(row))
+        result = "\n\n"
 
-        return
+        for row in grid:
+            result += "".join(row) + "\n"
+
+        return result
 
     def part_2(self):
         while self.folds:
             self.fold()
 
-        self.display()
-
-        return
+        return self.display()
 
 
 def run_tests(p1_ans=T1_ANS, p2_ans=T2_ANS, fname="tests.txt"):
