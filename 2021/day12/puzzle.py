@@ -62,14 +62,14 @@ class Puzzle:
             if cave == "end":
                 self.all_path_routes.add(",".join(cur_path))
             else:
+                double_smalls = set(
+                    cave for cave in small_caves if cur_path.count(cave) > 1
+                )
                 for next_cave in self.caves[cave]:
-                    double_smalls = [
-                        cave for cave in small_caves if cur_path.count(cave) > 1
-                    ]
                     should_explore = (
-                        next_cave.isupper()
+                        (next_cave not in cur_path)
+                        or next_cave.isupper()
                         or (not double_smalls and next_cave != "start")
-                        or (next_cave not in cur_path)
                     )
                     if should_explore:
                         unexplored.append(cur_path + [next_cave])
