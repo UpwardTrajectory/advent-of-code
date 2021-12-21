@@ -27,8 +27,10 @@ class Puzzle:
     def build_init_vector(incoming_str):
         vec = np.zeros((9, 1), 'int64')
         initial_fishes = Counter(map(int, incoming_str.split(",")))
+        
         for num, cnt in initial_fishes.items():
             vec[num, 0] = cnt
+            
         return vec
 
     def get_population(self, n):
