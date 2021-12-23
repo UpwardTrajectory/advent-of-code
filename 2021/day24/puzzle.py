@@ -4,9 +4,13 @@ from dataclasses import dataclass, field
 import numpy as np
 
 
-T1_ANS = 17
+T1_ANS = 12521
 T2_ANS = None
 
+
+@dataclass
+class Pod:
+    
 
 @dataclass
 class Puzzle:
